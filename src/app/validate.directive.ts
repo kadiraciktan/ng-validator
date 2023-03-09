@@ -11,9 +11,7 @@ export class ValidateDirective {
 
   subscriptions: Subscription[] = [];
 
-  constructor(private el: ElementRef, private field: NgControl) {
-    console.log('validate directive called');
-  }
+  constructor(private el: ElementRef, private field: NgControl) {}
 
   ngOnInit() {
     this.field.control?.setValidators(this.validate);
@@ -27,17 +25,24 @@ export class ValidateDirective {
 
     console.log('validators', validators);
 
-    this.field.control?.valueChanges.subscribe((value) => {
-      if (this.field.control?.invalid) {
-        validators.forEach((validator) => {
-          if (this.field.control?.hasError(validator)) {
-            errorLabel.innerText = `This field must be a valid ${validator}`;
-          }
-        });
-        errorLabel.style.display = 'block';
-      } else {
-        errorLabel.style.display = 'none';
-      }
-    });
+    if (this.field.control) {
+      const controlSub = this.field.control.valueChanges.subscribe((value) => {
+        if (this.field.control?.invalid) {
+          validators.forEach((validator) => {
+            if (this.field.control?.hasError(validator)) {
+              errorLabel.innerText = `This field must be a valid ${validator}`;
+            }
+          });
+          errorLabel.style.display = 'block';
+        } else {
+          errorLabel.style.display = 'none';
+        }
+      });
+      this.subscriptions.push(controlSub);
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }

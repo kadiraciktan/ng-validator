@@ -1,4 +1,4 @@
-<form #myForm="ngForm">
+<form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
   <input
     type="text"
     name="name"
@@ -9,7 +9,6 @@
 
   <label *ngIf="!txtName.valid">
     {{ txtName.errors | json }}
-    
   </label>
 
   <button type="submit" [disabled]="myForm.invalid">Submit</button>
