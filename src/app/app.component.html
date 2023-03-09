@@ -1,26 +1,72 @@
-<form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
+<form class="form" #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
   <mat-form-field>
+    <mat-label>Form Field</mat-label>
     <input
       matInput
       type="text"
-      name="name"
-      [(ngModel)]="userName"
-      #txtName="ngModel"
+      name="userName"
+      [(ngModel)]="input.userName"
+      #username="ngModel"
+      [validate]="['required']"
+    />
+    <!-- <mat-error>asdasd</mat-error> -->
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Form Field</mat-label>
+
+    <input
+      matInput
+      type="text"
+      name="password"
+      [(ngModel)]="input.password"
+      #password="ngModel"
+      [validate]="['required']"
+    />
+    <!-- <mat-error>asdasd</mat-error> -->
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Form Field</mat-label>
+
+    <input
+      matInput
+      type="text"
+      name="email"
+      [(ngModel)]="input.email"
+      #email="ngModel"
       [validate]="['required', 'validateEmail']"
     />
+    <!-- <mat-error>asdasd</mat-error> -->
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Form Field</mat-label>
+
+    <input
+      matInput
+      type="text"
+      name="phone"
+      [(ngModel)]="input.phone"
+      #phone="ngModel"
+      [validate]="['required', 'validateTurkishPhone']"
+    />
+    <!-- <mat-error>asdasd</mat-error> -->
   </mat-form-field>
 
-  <!-- <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill">
+    <mat-label>Form Field</mat-label>
+
     <mat-label>Select</mat-label>
     <mat-select
-      [(ngModel)]="selectedValue"
+      [(ngModel)]="input.loginType"
       [validate]="['required']"
-      name="asd"
+      name="loginType"
     >
-      <mat-option value="one">First option</mat-option>
-      <mat-option value="two">Second option</mat-option>
+      <mat-option
+        *ngFor="let type of loginTypes | keyvalue"
+        [value]="type.value"
+        >{{ type.key }}</mat-option
+      >
     </mat-select>
-  </mat-form-field> -->
+  </mat-form-field>
 
   <!-- <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedValue" [validate]="['required']" name="erttete">
     <mat-radio-button value="1">Option 1</mat-radio-button>
