@@ -10,7 +10,7 @@ import { ExtendValidators } from './extendValidators';
 export class AppComponent {
   title = 'form-validator';
   userName = null;
-
+  selectedValue = null;
   validators = ExtendValidators;
 
   onSubmit(ngForm: NgForm) {

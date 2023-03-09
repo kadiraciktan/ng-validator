@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { currentValidatorMethods, ExtendValidators } from './extendValidators';
 
 @Directive({
@@ -12,11 +12,7 @@ export class ValidateDirective {
 
   subscriptions: Subscription[] = [];
 
-  constructor(
-    private el: ElementRef,
-    private field: NgControl,
-    private readonly viewContainerRef: ViewContainerRef
-  ) {}
+  constructor(private el: ElementRef, private field: NgControl) {}
 
   ngOnInit() {
     const validators = Object.getOwnPropertyNames(ExtendValidators);
@@ -26,15 +22,33 @@ export class ValidateDirective {
     );
 
     if (this.field.control) {
-      const controlSub = this.field.control.valueChanges.subscribe((value) => {
-        if (this.field.control?.invalid || this.field.control?.dirty) {
-          validators.forEach((validator) => {
-            if (this.field.control?.hasError(validator)) {
-            }
-          });
-        } else {
-        }
-      });
+      const errorElement = document.createElement('span');
+      errorElement.style.color = 'red';
+      errorElement.style.fontSize = '12px';
+      errorElement.style.fontWeight = 'bold';
+      errorElement.style.display = 'flex';
+      errorElement.style.width = '100%';
+
+      const controlSub = this.field.control.valueChanges
+        .pipe(filter((value) => value !== null))
+        .subscribe((value) => {
+          if (this.field.control?.invalid || this.field.control?.dirty) {
+            errorElement.id = this.field.name + 'Error';
+            errorElement.style.position = 'absolute';
+
+            this.el.nativeElement.parentElement.parentElement.appendChild(
+              errorElement
+            );
+
+            validators.forEach((validator) => {
+              if (this.field.control?.hasError(validator)) {
+                errorElement.innerHTML =
+                  this.field.control?.getError(validator);
+              }
+            });
+          } else {
+          }
+        });
       this.subscriptions.push(controlSub);
     }
   }

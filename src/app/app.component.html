@@ -10,6 +10,23 @@
     />
   </mat-form-field>
 
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Select</mat-label>
+    <mat-select
+      [(ngModel)]="selectedValue"
+      [validate]="['required']"
+      name="asd"
+    >
+      <mat-option value="one">First option</mat-option>
+      <mat-option value="two">Second option</mat-option>
+    </mat-select>
+  </mat-form-field> -->
+
+  <!-- <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedValue" [validate]="['required']" name="erttete">
+    <mat-radio-button value="1">Option 1</mat-radio-button>
+    <mat-radio-button value="2">Option 2</mat-radio-button>
+  </mat-radio-group> -->
+
   <button type="submit" [disabled]="myForm.invalid">Submit</button>
 
   <div>{{ myForm.valid | json }}</div>
