@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input } from '@angular/core';
-import { NgControl, ValidatorFn } from '@angular/forms';
+import { NgControl, ValidatorFn, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 @Directive({
@@ -16,10 +16,6 @@ export class ValidateDirective {
   }
 
   ngOnInit() {
-    const form = this.el.nativeElement.closest('form');
-
-    console.log('FORM', form);
-
     this.field.control?.setValidators(this.validate);
 
     const errorLabel = document.createElement('label');
@@ -27,16 +23,18 @@ export class ValidateDirective {
     errorLabel.style.display = 'none';
     this.el.nativeElement.parentNode.appendChild(errorLabel);
 
+    const validators = Object.getOwnPropertyNames(Validators);
+
+    console.log('validators', validators);
+
     this.field.control?.valueChanges.subscribe((value) => {
       if (this.field.control?.invalid) {
+        validators.forEach((validator) => {
+          if (this.field.control?.hasError(validator)) {
+            errorLabel.innerText = `This field must be a valid ${validator}`;
+          }
+        });
         errorLabel.style.display = 'block';
-        console.log('ERROR', this.field.control?.errors);
-        if (this.field.control.hasError('required')) {
-          errorLabel.innerText = 'This field  is required';
-        }
-        if (this.field.control.hasError('email')) {
-          errorLabel.innerText = 'This field must be a valid email';
-        }
       } else {
         errorLabel.style.display = 'none';
       }
