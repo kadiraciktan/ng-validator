@@ -40,7 +40,7 @@ export class ValidateDirective {
         this.validate.map((validator) => this.generateValidator(validator))
       );
 
-      this.field.control?.valueChanges
+      const fieldSub = this.field.control?.valueChanges
         .pipe(
           startWith(this.field.control?.value),
           filter((value) => !!value)
@@ -48,6 +48,8 @@ export class ValidateDirective {
         .subscribe(() => {
           this.checkErrorLabel(errorElement);
         });
+
+      this.subscriptions.push(fieldSub);
 
       // this.el.nativeElement.addEventListener('blur', () => {
       //   this.checkErrorLabel(errorElement);
