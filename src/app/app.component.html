@@ -1,5 +1,5 @@
 <form class="form" #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
-  <mat-form-field>
+  <!-- <mat-form-field>
     <mat-label>Form Field</mat-label>
     <input
       matInput
@@ -9,7 +9,9 @@
       #username="ngModel"
       [validate]="['required']"
     />
-  </mat-form-field>
+  </mat-form-field> -->
+
+  <!-- 
   <mat-form-field>
     <mat-label>Form Field</mat-label>
 
@@ -21,7 +23,8 @@
       #password="ngModel"
       [validate]="['required']"
     />
-  </mat-form-field>
+  </mat-form-field> -->
+
   <mat-form-field>
     <mat-label>Form Field</mat-label>
 
@@ -34,7 +37,8 @@
       [validate]="['required', 'validateEmail']"
     />
   </mat-form-field>
-  <mat-form-field>
+
+  <!-- <mat-form-field>
     <mat-label>Form Field</mat-label>
 
     <input
@@ -45,9 +49,9 @@
       #phone="ngModel"
       [validate]="['required', 'validateTurkishPhone']"
     />
-  </mat-form-field>
+  </mat-form-field> -->
 
-  <mat-form-field appearance="fill">
+  <!-- <mat-form-field appearance="fill">
     <mat-label>Form Field</mat-label>
 
     <mat-label>Select</mat-label>
@@ -62,9 +66,9 @@
         >{{ type.key }}</mat-option
       >
     </mat-select>
-  </mat-form-field>
+  </mat-form-field> -->
 
-  <mat-form-field>
+  <!-- <mat-form-field>
     <mat-label>Form Field</mat-label>
     <input
       matInput
@@ -77,11 +81,14 @@
       [matAutocomplete]="auto"
     />
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredCities$ | async" [value]="option">
+      <mat-option
+        *ngFor="let option of filteredCities$ | async"
+        [value]="option"
+      >
         {{ option }}
       </mat-option>
     </mat-autocomplete>
-  </mat-form-field>
+  </mat-form-field> -->
 
   <button type="submit" [disabled]="myForm.invalid">Submit</button>
 

@@ -2,7 +2,9 @@ import { Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { NgControl, ValidatorFn, Validators } from '@angular/forms';
 import { MatError } from '@angular/material/form-field';
 import { filter, startWith, Subscription } from 'rxjs';
-import { currentValidatorMethods, ExtendValidators } from './extendValidators';
+import { currentValidatorMethods } from './current-validor.type';
+import { ExtendValidators } from './extendValidators';
+import { errorLanguage } from './language.object';
 
 @Directive({
   selector: '[validate]',
@@ -40,20 +42,17 @@ export class ValidateDirective {
         this.validate.map((validator) => this.generateValidator(validator))
       );
 
+      this.checkErrorLabel(errorElement);
       const fieldSub = this.field.control?.valueChanges
         .pipe(
           startWith(this.field.control?.value),
           filter((value) => !!value)
         )
-        .subscribe(() => {
-          this.checkErrorLabel(errorElement);
+        .subscribe((value) => {
+          this.checkErrorLabel(errorElement, value);
         });
 
       this.subscriptions.push(fieldSub);
-
-      // this.el.nativeElement.addEventListener('blur', () => {
-      //   this.checkErrorLabel(errorElement);
-      // });
 
       this.el.nativeElement.addEventListener('focus', () => {
         this.checkErrorLabel(errorElement);
@@ -69,12 +68,17 @@ export class ValidateDirective {
     return ExtendValidators[validator] as ValidatorFn;
   }
 
-  checkErrorLabel(errorElement: HTMLElement) {
+  checkErrorLabel(errorElement: HTMLElement, value?: any) {
     const activeErrors = this.field.control?.errors;
+    if (value === undefined) {
+      value = '';
+    }
+
     if (activeErrors) {
       const errorKey = Object.keys(activeErrors)[0];
       errorElement.style.opacity = '100';
-      errorElement.innerHTML = '*Form Field Error  ' + errorKey;
+      errorElement.innerHTML =
+        errorLanguage.en[errorKey as currentValidatorMethods].message(value);
       return;
     } else {
       errorElement.style.opacity = '0';

@@ -1,7 +1,5 @@
 import { AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 
-export type currentValidatorMethods = keyof typeof ExtendValidators;
-
 export class ExtendValidators extends Validators {
   static validateEmail(control: AbstractControl) {
     const email = control.value;
