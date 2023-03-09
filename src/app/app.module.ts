@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [AppComponent, ValidateDirective],
@@ -23,6 +24,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatOptionModule,
     MatSelectModule,
     MatRadioModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

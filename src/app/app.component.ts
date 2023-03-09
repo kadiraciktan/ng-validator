@@ -3,8 +3,8 @@ import { NgForm, Validators } from '@angular/forms';
 import { ExtendValidators } from './extendValidators';
 
 enum LoginType {
-  'Admin',
-  'User',
+  Admin = 'Admin',
+  User = 'User',
 }
 
 interface IForm {
@@ -13,6 +13,7 @@ interface IForm {
   phone: string;
   password: string;
   loginType: LoginType | null;
+  city: string;
 }
 
 @Component({
@@ -27,15 +28,15 @@ export class AppComponent {
     phone: '',
     password: '',
     loginType: null,
+    city: '',
   };
+  cities = ['Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'];
+  filteredCities = this.cities;
 
   loginTypes = LoginType;
 
   title = 'form-validator';
   userName = null;
-  selectedValue = null;
-
-  validators = ExtendValidators;
 
   onSubmit(ngForm: NgForm) {
     console.log(ngForm);
@@ -44,5 +45,13 @@ export class AppComponent {
     } else {
       alert('Form is INVALID');
     }
+  }
+
+  onCityChange(city: string) {
+    this.input.city = city;
+
+    this.filteredCities = this.cities.filter((c) =>
+      c.toLowerCase().includes(city.toLowerCase())
+    );
   }
 }

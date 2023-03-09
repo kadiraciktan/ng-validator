@@ -1,4 +1,4 @@
-import { AbstractControl, Validators } from '@angular/forms';
+import { AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 
 export type currentValidatorMethods = keyof typeof ExtendValidators;
 
@@ -25,5 +25,11 @@ export class ExtendValidators extends Validators {
       return { validateTurkishPhone: true };
     }
     return null;
+  }
+
+  static override required(
+    control: AbstractControl<any, any>
+  ): ValidationErrors | null {
+    return control.value ? null : { required: true };
   }
 }

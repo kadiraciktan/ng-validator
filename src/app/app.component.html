@@ -4,12 +4,11 @@
     <input
       matInput
       type="text"
-      name="userName"
+      name="aaaa"
       [(ngModel)]="input.userName"
       #username="ngModel"
       [validate]="['required']"
     />
-    <!-- <mat-error>asdasd</mat-error> -->
   </mat-form-field>
   <mat-form-field>
     <mat-label>Form Field</mat-label>
@@ -22,7 +21,6 @@
       #password="ngModel"
       [validate]="['required']"
     />
-    <!-- <mat-error>asdasd</mat-error> -->
   </mat-form-field>
   <mat-form-field>
     <mat-label>Form Field</mat-label>
@@ -35,7 +33,6 @@
       #email="ngModel"
       [validate]="['required', 'validateEmail']"
     />
-    <!-- <mat-error>asdasd</mat-error> -->
   </mat-form-field>
   <mat-form-field>
     <mat-label>Form Field</mat-label>
@@ -48,7 +45,6 @@
       #phone="ngModel"
       [validate]="['required', 'validateTurkishPhone']"
     />
-    <!-- <mat-error>asdasd</mat-error> -->
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -68,10 +64,24 @@
     </mat-select>
   </mat-form-field>
 
-  <!-- <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedValue" [validate]="['required']" name="erttete">
-    <mat-radio-button value="1">Option 1</mat-radio-button>
-    <mat-radio-button value="2">Option 2</mat-radio-button>
-  </mat-radio-group> -->
+  <mat-form-field>
+    <mat-label>Form Field</mat-label>
+    <input
+      matInput
+      type="text"
+      name="city"
+      [ngModel]="input.city"
+      (ngModelChange)="onCityChange($event)"
+      #username="ngModel"
+      [validate]="['required']"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredCities" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 
   <button type="submit" [disabled]="myForm.invalid">Submit</button>
 
