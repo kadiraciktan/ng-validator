@@ -1,5 +1,6 @@
 import { Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { NgControl, ValidatorFn, Validators } from '@angular/forms';
+import { MatError } from '@angular/material/form-field';
 import { filter, Subscription } from 'rxjs';
 import { currentValidatorMethods, ExtendValidators } from './extendValidators';
 
@@ -12,7 +13,11 @@ export class ValidateDirective {
 
   subscriptions: Subscription[] = [];
 
-  constructor(private el: ElementRef, private field: NgControl) {}
+  constructor(
+    private el: ElementRef,
+    private field: NgControl,
+    public readonly viewContainerRef: ViewContainerRef
+  ) {}
 
   ngOnInit() {
     const validators = Object.getOwnPropertyNames(ExtendValidators);
@@ -24,9 +29,8 @@ export class ValidateDirective {
     if (this.field.control) {
       const errorElement = document.createElement('span');
       errorElement.style.color = 'red';
-      errorElement.style.fontSize = '12px';
-      errorElement.style.fontWeight = 'bold';
-      errorElement.style.display = 'flex';
+      errorElement.style.marginLeft = '1rem';
+      errorElement.style.marginTop = '-22px';
       errorElement.style.width = '100%';
 
       const controlSub = this.field.control.valueChanges
@@ -34,11 +38,21 @@ export class ValidateDirective {
         .subscribe((value) => {
           if (this.field.control?.invalid || this.field.control?.dirty) {
             errorElement.id = this.field.name + 'Error';
-            errorElement.style.position = 'absolute';
 
-            this.el.nativeElement.parentElement.parentElement.appendChild(
-              errorElement
+            console.log(
+              'directive class',
+              this.el.nativeElement.closest('mat-form-field')
             );
+
+            const matFormField =
+              this.el.nativeElement.closest('mat-form-field');
+
+            if (matFormField) {
+              //append matError to matFormField as a last child
+              matFormField.insertAdjacentElement('beforeend', errorElement);
+            } else {
+              this.el.nativeElement.parentElement.pushChild(errorElement);
+            }
 
             validators.forEach((validator) => {
               if (this.field.control?.hasError(validator)) {

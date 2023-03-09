@@ -18,4 +18,12 @@ export class ExtendValidators extends Validators {
     }
     return null;
   }
+
+  static validateTurkishPhone(control: AbstractControl) {
+    const phone = control.value;
+    if (phone && phone.length > 0 && phone.length !== 10) {
+      return { validateTurkishPhone: true };
+    }
+    return null;
+  }
 }
