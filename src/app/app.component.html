@@ -6,7 +6,7 @@
       name="name"
       [(ngModel)]="userName"
       #txtName="ngModel"
-      [validate]="[validators.required, validators.email]"
+      [validate]="['required', 'validateEmail']"
     />
   </mat-form-field>
 

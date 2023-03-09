@@ -1,14 +1,14 @@
 import { Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { NgControl, ValidatorFn, Validators } from '@angular/forms';
-import { MatError } from '@angular/material/form-field';
 import { Subscription } from 'rxjs';
+import { currentValidatorMethods, ExtendValidators } from './extendValidators';
 
 @Directive({
   selector: '[validate]',
   inputs: ['validate'],
 })
 export class ValidateDirective {
-  @Input() validate: ValidatorFn[] = [];
+  @Input() validate: currentValidatorMethods[] = [];
 
   subscriptions: Subscription[] = [];
 
@@ -19,9 +19,11 @@ export class ValidateDirective {
   ) {}
 
   ngOnInit() {
-    this.field.control?.setValidators(this.validate);
+    const validators = Object.getOwnPropertyNames(ExtendValidators);
 
-    const validators = Object.getOwnPropertyNames(Validators);
+    this.field.control?.setValidators(
+      this.validate.map((validator) => this.generateValidator(validator))
+    );
 
     if (this.field.control) {
       const controlSub = this.field.control.valueChanges.subscribe((value) => {
@@ -39,5 +41,9 @@ export class ValidateDirective {
 
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  generateValidator(validator: currentValidatorMethods): ValidatorFn {
+    return ExtendValidators[validator] as ValidatorFn;
   }
 }

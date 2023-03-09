@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
+import { ExtendValidators } from './extendValidators';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ export class AppComponent {
   title = 'form-validator';
   userName = null;
 
-  validators = Validators;
+  validators = ExtendValidators;
 
   onSubmit(ngForm: NgForm) {
     console.log(ngForm);
