@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 import { ExtendValidators } from './extendValidators';
 
 enum LoginType {
@@ -33,6 +34,8 @@ export class AppComponent {
   cities = ['Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya'];
   filteredCities = this.cities;
 
+  filteredCities$ = new BehaviorSubject(this.cities);
+
   loginTypes = LoginType;
 
   title = 'form-validator';
@@ -49,6 +52,10 @@ export class AppComponent {
 
   onCityChange(city: string) {
     this.input.city = city;
+
+    this.filteredCities$.next(
+      this.cities.filter((c) => c.toLowerCase().includes(city.toLowerCase()))
+    );
 
     this.filteredCities = this.cities.filter((c) =>
       c.toLowerCase().includes(city.toLowerCase())
