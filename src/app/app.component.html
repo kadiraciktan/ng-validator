@@ -1,15 +1,14 @@
 <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)">
-  <input
-    type="text"
-    name="name"
-    [(ngModel)]="userName"
-    #txtName="ngModel"
-    [validate]="[validators.required, validators.email]"
-  />
-
-  <label *ngIf="!txtName.valid">
-    {{ txtName.errors | json }}
-  </label>
+  <mat-form-field>
+    <input
+      matInput
+      type="text"
+      name="name"
+      [(ngModel)]="userName"
+      #txtName="ngModel"
+      [validate]="[validators.required, validators.email]"
+    />
+  </mat-form-field>
 
   <button type="submit" [disabled]="myForm.invalid">Submit</button>
 
